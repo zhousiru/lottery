@@ -1,0 +1,17 @@
+services:
+  web:
+    image: ghcr.io/zhousiru/lottery-web:${LOTTERY_TAG:-latest}
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - 3080:80
+    environment:
+      - BACKEND_URL=http://backend:3001
+
+  backend:
+    image: ghcr.io/zhousiru/lottery-backend:${LOTTERY_TAG:-latest}
+    restart: unless-stopped
+    env_file:
+      - path: .env.backend
+        required: false
